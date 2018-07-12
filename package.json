@@ -6,6 +6,7 @@
   "license": "none",
   "private": true,
   "dependencies": {
-    "lambdafai": "dankantor/lambdafai#v0.0.8"
+    "lambdafai": "dankantor/lambdafai#v0.0.8",
+    "q": "^1.5.1"
   }
 }

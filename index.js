@@ -13,9 +13,15 @@ lambdafai('beer', app => {
 
 	// Define Lambdas:
 	app.lambda({ name: 'api', timeout: 60 })
-  	.options('/beer', null, {'type': 'MOCK'})
-  	.get('/beer', (req, res) => {
-      res.send('beer');
+  	.options('/beers', null, {'type': 'MOCK'})
+  	.get('/beers', async (req, res) => {
+      try {
+        let response = await db.listByCreatedAt(req);
+        res.send(response);  
+      } catch (e) {
+        console.error(e);
+        res.done(e, null);
+      } 
     });
 
 });
@@ -23,7 +29,7 @@ lambdafai('beer', app => {
 
 /*
   AWS_PROFILE=personal node index.js create-resources dev
-  AWS_PROFILE=personal node index.js invoke dev requests/get.js
+  AWS_PROFILE=personal node index.js invoke dev requests/beers-get.js
   AWS_PROFILE=personal node index.js deploy dev --lambda api
   AWS_PROFILE=personal node index.js promote dev prod
 */
