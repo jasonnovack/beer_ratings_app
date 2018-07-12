@@ -1,0 +1,11 @@
+{
+  "name": "BeerRatings",
+  "version": "0.0.1",
+  "description": "Beer Ratings",
+  "author": "Jason Novack",
+  "license": "none",
+  "private": true,
+  "dependencies": {
+    "lambdafai": "dankantor/lambdafai#v0.0.8"
+  }
+}
