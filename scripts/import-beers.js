@@ -2,15 +2,22 @@ const request = require("request");
 const fs = require('fs');
 const parse = require('csv-parse');
 const delay = require('delay');
+const AWS = require('aws-sdk');
+const _ = require('underscore');
 
-const looper = async () => {
+const env = 'dev';
+
+const importBeers = async () => {
   let ratings = await loadRatings();
 
   let matches = [];
   let noMatches = [];
+  let count = 0;
   for (let rating of ratings) {
     try {
-      await delay(500);
+      count += 1;
+      await delay(250);
+      console.log(`${count}/${ratings.length} : ${rating.name}`);
       let beerWithId = await getBeer(rating);
       let beerWithDetails = await getDetails(beerWithId);
       matches.push(beerWithDetails);
@@ -18,23 +25,31 @@ const looper = async () => {
       noMatches.push(e);
     }
   }
+  batchImportItems(matches);
+  writeFile(`./scripts/failures-${env}-${_.now()}.json`, JSON.stringify(noMatches, null, 2));
+
   console.log('matches:', JSON.stringify(matches, null, 2));
   console.log('no matches:', JSON.stringify(noMatches, null, 2));
+  console.log(` ${matches.length} Matches and ${noMatches.length} No Matches`);
 };
 
 const loadRatings = async () => {
   return new Promise((resolve, reject) => {
     let beers = [];
-    const inputFile = './scripts/ratings-test.csv';
+    const inputFile = `./scripts/ratings-${env}.csv`;
 
     var parser = parse({delimiter: ','}, (err, data) => {
       for (let line of data) {
-        beers.push({
+        let item = {
+          'b': 'b',
           'createdAt': Date.parse(line[0]),
           'name': line[1],
-          'score': line[2],
-          'comment': line[3]
-        });
+          'score': line[2]
+        };
+        if (line[3] !== '') {
+          item.comment = line[3];
+        }
+        beers.push(item);
       }
       resolve(beers);
     });
@@ -43,7 +58,6 @@ const loadRatings = async () => {
 };
 
 const getBeer = async (beer) => {
-  console.log('getBeer', beer.name);
   return new Promise(async (resolve, reject) => {
     var options = { 
       method: 'POST',
@@ -64,7 +78,7 @@ const getBeer = async (beer) => {
       json: true 
     };
     request(options, async (error, response, body) => {
-      if (error) {
+      if (error || !body[0] || !body[0].data || !body[0].data.results) {
         console.error(error);
         reject(beer);
       } else {
@@ -111,25 +125,43 @@ const getDetails = async (beer) => {
               if (body.data.beer.brewer.type && body.data.beer.brewer.type.length > 0) {
                 beer.brewerType = body.data.beer.brewer.type;
               }
+              if (body.data.beer.brewer.streetAddress && body.data.beer.brewer.streetAddress.length > 0) {
+                beer.streetAddress = body.data.beer.brewer.streetAddress;
+              }
               if (body.data.beer.brewer.city && body.data.beer.brewer.city.length > 0) {
                 beer.city = body.data.beer.brewer.city;
               }
-              if (body.data.beer.abv) {
-                beer.abv = body.data.beer.abv;
+              if (body.data.beer.brewer.state && body.data.beer.brewer.state.name && body.data.beer.brewer.state.name.length > 0) {
+                beer.state = body.data.beer.brewer.state.name;
               }
-              if (body.data.beer.ibu) {
-                beer.ibu = body.data.beer.ibu;
+              if (body.data.beer.brewer.country.name && body.data.beer.brewer.country.name.length > 0) {
+                beer.country = body.data.beer.brewer.country.name;
               }
-              if (body.data.beer.overallScore) {
-                beer.rateBeerScore = body.data.beer.overallScore;
-              }           
+              if (body.data.beer.brewer.streetAddress && body.data.beer.brewer.streetAddress.length > 0) {
+                beer.streetAddress = body.data.beer.brewer.streetAddress;
+              }
+              if (body.data.beer.brewer.zip && body.data.beer.brewer.zip.length > 0) {
+                beer.zip = body.data.beer.brewer.streetAddress;
+              }
+              if (body.data.beer.brewer.id && body.data.beer.brewer.id.length > 0) {
+                beer.brewerId = body.data.beer.brewer.id;
+              }
+              if (body.data.beer.brewer.imageUrl && body.data.beer.brewer.imageUrl.length > 0) {
+                beer.brewerImage = body.data.beer.brewer.imageUrl;
+              }
             }
-            if (body.data.beer.brewer.state && body.data.beer.brewer.state.name && body.data.beer.brewer.state.name.length > 0) {
-              beer.state = body.data.beer.brewer.state.name;
+            if (body.data.beer.abv) {
+              beer.abv = body.data.beer.abv;
             }
-            if (body.data.beer.brewer.country.name && body.data.beer.brewer.country.name.length > 0) {
-              beer.country = body.data.beer.brewer.country.name;
+            if (body.data.beer.ibu) {
+              beer.ibu = body.data.beer.ibu;
             }
+            if (body.data.beer.overallScore) {
+              beer.rateBeerScore = body.data.beer.overallScore;
+            }
+            if (body.data.beer.imageUrl && body.data.beer.imageUrl.length > 0) {
+              beer.image = body.data.beer.imageUrl;
+            }           
             if (body.data.beer.style.name && body.data.beer.style.name.length > 0) {
               beer.style = body.data.beer.style.name;
             }
@@ -141,6 +173,50 @@ const getDetails = async (beer) => {
         }
       });
   })
-}
+};
 
-looper();
+const batchImportItems = async (matches) => {
+  let chunked = _.chunk(matches, 25);
+  for (let chunk of chunked) {
+    let putRequests = chunk.map(item => {
+      return {
+        'PutRequest': {
+          'Item': item
+        }
+      }
+    });
+    let params = {
+      'RequestItems': {}
+    };
+    params.RequestItems[`beer-${env}-Beer`] = putRequests;
+    try {
+      await batchWrite(params);
+    } catch (err) {
+      console.log('err', err);
+    }
+  }
+};
+
+const batchWrite = async (params) => {
+  const dynamodb = new AWS.DynamoDB.DocumentClient({region: 'us-east-1'});
+  dynamodb.batchWrite(params, function(err, data) {
+    if (err) {
+      console.log('error', err);
+    } else {
+      console.log('good', data);
+    }
+    return;
+  });
+};
+
+const writeFile = (fileName, txt) => {
+  fs.writeFile(fileName, txt, err => {
+      if(err) {
+       console.error(err);
+    } else {
+      console.log('wrote file: ' + fileName);
+   }
+ });
+};
+
+importBeers();
