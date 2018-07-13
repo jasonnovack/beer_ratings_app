@@ -1,6 +1,6 @@
 const lambdafai = require('lambdafai');
 const db = require('./lib/db');
-const errors = lambdafai.errors;
+const routes = require('./lib/routes');
 
 lambdafai('beer', app => {
 	// Define DynamoDB tables:
@@ -14,15 +14,7 @@ lambdafai('beer', app => {
 	// Define Lambdas:
 	app.lambda({ name: 'api', timeout: 60 })
   	.options('/beers', null, {'type': 'MOCK'})
-  	.get('/beers', async (req, res) => {
-      try {
-        let response = await db.listByCreatedAt(req);
-        res.send(response);  
-      } catch (e) {
-        console.error(e);
-        res.done(e, null);
-      } 
-    });
+  	.get('/beers', routes.getBeers);
 
 });
 
