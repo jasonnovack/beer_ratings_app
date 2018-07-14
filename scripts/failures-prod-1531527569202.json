@@ -7,12 +7,6 @@
   },
   {
     "b": "b",
-    "createdAt": 1185249600000,
-    "name": "Lost Coast Great White",
-    "score": "6"
-  },
-  {
-    "b": "b",
     "createdAt": 1185336000000,
     "name": "O'Hanlon's Thomas Hardys Ale (vintage 2003 and later)",
     "score": "8"
@@ -454,12 +448,6 @@
     "createdAt": 1223524800000,
     "name": "Nils Oscar Kalasӧl",
     "score": "8"
-  },
-  {
-    "b": "b",
-    "createdAt": 1223524800000,
-    "name": "Shiner Bock",
-    "score": "5"
   },
   {
     "b": "b",
@@ -1324,6 +1312,12 @@
     "createdAt": 1301371200000,
     "name": "Schneider Aventinus",
     "score": "7"
+  },
+  {
+    "b": "b",
+    "createdAt": 1301371200000,
+    "name": "Ayinger Celebrator Doppelbock",
+    "score": "6"
   },
   {
     "b": "b",
@@ -2733,12 +2727,6 @@
   {
     "b": "b",
     "createdAt": 1406347200000,
-    "name": "Flagship Dark Mild",
-    "score": "6"
-  },
-  {
-    "b": "b",
-    "createdAt": 1406347200000,
     "name": "Flagship APA",
     "score": "5"
   },
@@ -2843,12 +2831,6 @@
     "createdAt": 1409976000000,
     "name": "Crowbar Crow’s Scream Ale",
     "score": "7"
-  },
-  {
-    "b": "b",
-    "createdAt": 1409976000000,
-    "name": "Lervig Brewers Reserve Rye IPA",
-    "score": "5"
   },
   {
     "b": "b",
@@ -3405,12 +3387,6 @@
   {
     "b": "b",
     "createdAt": 1428120000000,
-    "name": "Old 690 Black IPA",
-    "score": "5"
-  },
-  {
-    "b": "b",
-    "createdAt": 1428120000000,
     "name": "Corcoran Dutchman’s Creek",
     "score": "7"
   },
@@ -3803,12 +3779,6 @@
     "createdAt": 1441425600000,
     "name": "Sunriver Brett’s Killer Kolsch",
     "score": "8"
-  },
-  {
-    "b": "b",
-    "createdAt": 1441425600000,
-    "name": "Double Mountain IRA (India Red Ale)",
-    "score": "4"
   },
   {
     "b": "b",

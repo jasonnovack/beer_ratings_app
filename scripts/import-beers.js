@@ -16,7 +16,7 @@ const importBeers = async () => {
   for (let rating of ratings) {
     try {
       count += 1;
-      await delay(250);
+      await delay(100);
       console.log(`${count}/${ratings.length} : ${rating.name}`);
       let beerWithId = await getBeer(rating);
       let beerWithDetails = await getDetails(beerWithId);
@@ -38,7 +38,7 @@ const loadRatings = async () => {
     let beers = [];
     const inputFile = `./scripts/ratings-${env}.csv`;
 
-    var parser = parse({delimiter: ','}, (err, data) => {
+    var parser = parse({delimiter: ','}, async (err, data) => {
       for (let line of data) {
         let item = {
           'b': 'b',
@@ -118,6 +118,18 @@ const getDetails = async (beer) => {
           reject(beer);
         } else {
           if (body && body.data && body.data.beer) {
+            if (body.data.beer.abv) {
+              beer.abv = body.data.beer.abv;
+            }
+            if (body.data.beer.ibu) {
+              beer.ibu = body.data.beer.ibu;
+            }
+            if (body.data.beer.overallScore) {
+              beer.rateBeerScore = body.data.beer.overallScore;
+            }
+            if (body.data.beer.imageUrl && body.data.beer.imageUrl.length > 0) {
+              beer.image = body.data.beer.imageUrl;
+            }
             if (body.data.beer.brewer) {
               if (body.data.beer.brewer.name && body.data.beer.brewer.name.length > 0) {
                 beer.brewer = body.data.beer.brewer.name;
@@ -150,23 +162,16 @@ const getDetails = async (beer) => {
                 beer.brewerImage = body.data.beer.brewer.imageUrl;
               }
             }
-            if (body.data.beer.abv) {
-              beer.abv = body.data.beer.abv;
-            }
-            if (body.data.beer.ibu) {
-              beer.ibu = body.data.beer.ibu;
-            }
-            if (body.data.beer.overallScore) {
-              beer.rateBeerScore = body.data.beer.overallScore;
-            }
-            if (body.data.beer.imageUrl && body.data.beer.imageUrl.length > 0) {
-              beer.image = body.data.beer.imageUrl;
-            }           
-            if (body.data.beer.style.name && body.data.beer.style.name.length > 0) {
-              beer.style = body.data.beer.style.name;
-            }
-            if (body.data.beer.style.parent.name && body.data.beer.style.parent.name.length > 0) {
-              beer.styleParent = body.data.beer.style.parent.name;
+            if (body.data.beer.style) {
+              if (body.data.beer.style.id && body.data.beer.style.id.length > 0) {
+                beer.styleId = body.data.beer.style.id;
+              }
+              if (body.data.beer.style.name && body.data.beer.style.name.length > 0) {
+                beer.style = body.data.beer.style.name;
+              }
+              if (body.data.beer.style.parent.name && body.data.beer.style.parent.name.length > 0) {
+                beer.styleParent = body.data.beer.style.parent.name;
+              }
             }
           }
           resolve(beer);
