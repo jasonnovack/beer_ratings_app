@@ -16,6 +16,7 @@ lambdafai('beer', app => {
   	.options('/beers', null, {'type': 'MOCK'})
   	.get('/beers', routes.getBeers)
     .post('/beers', routes.postBeer)
+    .get('/search', routes.getSearch)
     .post('/search', routes.postSearch);
 });
 
