@@ -1,4 +1,65 @@
 html, body {
   margin: 20px;
   padding: 0;
+  font-family: sans-serif;
+  font-color: #162D3D;
+}
+
+.result {
+  display: flex;
+  margin: 12px 0;
+  background-color: #fff;
+  padding: 5px 0;
+}
+
+.result:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.img {
+  height: 70px;
+  width: 70px;
+  background-size: contain;
+  margin: 0 20px 0 0;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 600px;
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.style {
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 300;
+  color: #00BCE8;
+}
+
+.brewer {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 300;
+}
+
+.rating {
+  margin: auto 0;
+  background-color: #00BCE8;
+  text-align: right;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }

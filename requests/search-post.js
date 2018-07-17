@@ -25,6 +25,6 @@
     "apiId": "1234567890"
   },
   "body": {
-    "query": "Golden Road Wol"
+    "query": "Duvel"
   }
 }
