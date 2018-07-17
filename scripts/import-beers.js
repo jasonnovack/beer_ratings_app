@@ -1,4 +1,4 @@
-const request = require("request");
+const request = require('request');
 const fs = require('fs');
 const parse = require('csv-parse');
 const delay = require('delay');
@@ -106,7 +106,7 @@ const getDetails = async (beer) => {
         Accept: 'application/json'
       },
       body: {
-        query: `query {beer(id: ${beer.id}) {id overallScore name abv ibu brewer {name type country {name} city state {name}} style {name parent {name}}}}`,
+        query: `query {beer(id: ${beer.id}) {id overallScore name abv ibu imageUrl brewer {id name type imageUrl country {name} city state {name} streetAddress zip} style {name id parent {name}}}}`,
         variables: '{}',
         operationName: null },
         json: true
@@ -153,7 +153,7 @@ const getDetails = async (beer) => {
                 beer.streetAddress = body.data.beer.brewer.streetAddress;
               }
               if (body.data.beer.brewer.zip && body.data.beer.brewer.zip.length > 0) {
-                beer.zip = body.data.beer.brewer.streetAddress;
+                beer.zip = body.data.beer.brewer.zip;
               }
               if (body.data.beer.brewer.id && body.data.beer.brewer.id.length > 0) {
                 beer.brewerId = body.data.beer.brewer.id;
