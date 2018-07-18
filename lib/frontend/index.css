@@ -41,6 +41,7 @@ input::-ms-clear {
   display: flex;
   background-color: #fff;
   padding: 1em 0;
+  cursor: pointer;
 }
 
 .result:nth-child(even) {
@@ -54,6 +55,7 @@ input::-ms-clear {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  pointer-events: none;
 }
 
 .info {
@@ -61,6 +63,7 @@ input::-ms-clear {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  pointer-events: none;
 }
 
 .name {
@@ -102,4 +105,35 @@ input::-ms-clear {
   display: flex;
   max-height: 48px;
   justify-content: center;
+  pointer-events: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  width: 80%;
+  height: calc(100vh * 0.8);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  padding: 1em;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
