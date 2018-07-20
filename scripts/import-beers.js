@@ -149,9 +149,6 @@ const getDetails = async (beer) => {
               if (body.data.beer.brewer.country.name && body.data.beer.brewer.country.name.length > 0) {
                 beer.country = body.data.beer.brewer.country.name;
               }
-              if (body.data.beer.brewer.streetAddress && body.data.beer.brewer.streetAddress.length > 0) {
-                beer.streetAddress = body.data.beer.brewer.streetAddress;
-              }
               if (body.data.beer.brewer.zip && body.data.beer.brewer.zip.length > 0) {
                 beer.zip = body.data.beer.brewer.zip;
               }

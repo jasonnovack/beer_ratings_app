@@ -57,7 +57,6 @@ input::-ms-clear {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  pointer-events: none;
 }
 
 .info {
@@ -65,7 +64,6 @@ input::-ms-clear {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  pointer-events: none;
 }
 
 .name {
@@ -92,7 +90,6 @@ input::-ms-clear {
   font-weight: 300;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .rating {
@@ -107,6 +104,11 @@ input::-ms-clear {
   display: flex;
   max-height: 48px;
   justify-content: center;
+}
+
+.result .img,
+.result .info,
+.result .rating {
   pointer-events: none;
 }
 
@@ -176,6 +178,8 @@ input::-ms-clear {
 }
 
 .rating-form {
-  margin: 5%;
   display: none;
+  margin: 5% auto;
+  max-width: 400px;
+  min-width: 260px;
 }

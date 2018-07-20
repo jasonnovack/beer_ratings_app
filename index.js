@@ -1,5 +1,6 @@
 const lambdafai = require('lambdafai');
 const db = require('./lib/db');
+const pwdb = require('./lib/pw-db');
 const routes = require('./lib/routes');
 
 lambdafai('beer', app => {
@@ -9,13 +10,18 @@ lambdafai('beer', app => {
     'fullSchema': db.fullSchema 
   });
 
+  app.table({
+    'name': pwdb.tableName,
+    'fullSchema': pwdb.fullSchema
+  });
+
 	// Add middleware to authenticate the user.
 
 	// Define Lambdas:
 	app.lambda({ name: 'api', timeout: 60 })
   	.options('/beers', null, {'type': 'MOCK'})
   	.get('/beers', routes.getBeers)
-    .post('/beers', routes.postBeer)
+    .post('/beers/:id', routes.postBeer)
     .get('/search', routes.getSearch)
     .post('/search', routes.postSearch);
 });

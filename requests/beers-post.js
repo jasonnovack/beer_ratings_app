@@ -25,11 +25,12 @@
     "apiId": "1234567890"
   },
   "body": {
+    "password": "crescent",
     "createdAt": 1185249600000,
-    "name": "Gulden Draak",
+    "name": "test123",
     "score": "10",
     "comment": null,
-    "id": "3958",
+    "id": "1",
     "brewer": "Brouwerij Van Steenberge",
     "brewerType": "Commercial Brewery",
     "city": "Ertvelde",
