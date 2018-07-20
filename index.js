@@ -21,7 +21,7 @@ lambdafai('beer', app => {
 	app.lambda({ name: 'api', timeout: 60 })
   	.options('/beers', null, {'type': 'MOCK'})
   	.get('/beers', routes.getBeers)
-    .post('/beers/:id', routes.postBeer)
+    .post('/beers', routes.postBeer)
     .get('/search', routes.getSearch)
     .post('/search', routes.postSearch);
 });
