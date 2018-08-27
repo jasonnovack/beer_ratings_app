@@ -31,6 +31,7 @@ lambdafai('beer', app => {
     .post('/beers', routes.postBeer)
     .get('/search', routes.getSearch)
     .post('/search', routes.postSearch)
+    .get('/tallies', routes.getTallies)
     .post('/tallies', routes.postTally);
 
   app.lambda({ name: 'crons', timeout: 300, ram: 512})
