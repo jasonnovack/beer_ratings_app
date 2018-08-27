@@ -7,10 +7,11 @@
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.274.1",
+    "chart.js": "^2.7.2",
     "csv-parse": "^2.5.0",
     "delay": "^3.0.0",
     "fs": "0.0.1-security",
-    "lambdafai": "dankantor/lambdafai#v0.0.8",
+    "lambdafai": "github:dankantor/lambdafai#v0.0.8",
     "q": "^1.5.1",
     "request": "^2.87.0",
     "underscore": "^1.9.1"
