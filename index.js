@@ -1,7 +1,9 @@
 const lambdafai = require('lambdafai');
 const db = require('./lib/db');
 const pwdb = require('./lib/pw-db');
+const tallydb = require('./lib/tallies-db');
 const routes = require('./lib/routes');
+const crons = require('./lib/crons');
 
 lambdafai('beer', app => {
 	// Define DynamoDB tables:
@@ -15,6 +17,11 @@ lambdafai('beer', app => {
     'fullSchema': pwdb.fullSchema
   });
 
+  app.table({
+    'name': tallydb.tableName,
+    'fullSchema': tallydb.fullSchema
+  });
+
 	// Add middleware to authenticate the user.
 
 	// Define Lambdas:
@@ -23,7 +30,11 @@ lambdafai('beer', app => {
   	.get('/beers', routes.getBeers)
     .post('/beers', routes.postBeer)
     .get('/search', routes.getSearch)
-    .post('/search', routes.postSearch);
+    .post('/search', routes.postSearch)
+    .post('/tallies', routes.postTally);
+
+  app.lambda({ name: 'crons', timeout: 300, ram: 512})
+    .scheduledEvent('/updateTallies', crons.updateTallies);
 });
 
 
