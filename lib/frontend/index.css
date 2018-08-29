@@ -183,3 +183,8 @@ input::-ms-clear {
   max-width: 400px;
   min-width: 260px;
 }
+
+.canvasContainer {
+  margin: 0 auto;
+  height: 100%
+}
